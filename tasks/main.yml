@@ -1,0 +1,25 @@
+---
+# tasks file for ansible
+---
+- name: Ubuntu Configuration Playbook
+  hosts: ubuntu_hosts
+  gather_facts: yes
+  become: yes
+  
+  tasks:
+    - name: Ensure a directory exists for storing OS details
+      ansible.builtin.file:
+        path: /home/users
+        state: directory
+
+    - name: Gather OS facts
+      ansible.builtin.setup:
+
+    - name: Create OS Details file
+      ansible.builtin.copy:
+        content: |
+          OS: {{ ansible_distribution }}
+          Version: {{ ansible_distribution_version }}
+          Architecture: {{ ansible_architecture }}
+          Kernel: {{ ansible_kernel }}
+        dest: "/home/users/os_details.txt"
